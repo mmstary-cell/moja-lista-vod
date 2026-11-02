@@ -1,6 +1,6 @@
 {
-  "name": "Netflix PL – moja lista",
-  "short_name": "Netflix PL",
+  "name": "Moja lista VOD",
+  "short_name": "Moja lista VOD",
   "lang": "pl",
   "start_url": "./",
   "scope": "./",
