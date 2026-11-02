@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e0e0e">
+  <meta name="color-scheme" content="dark">
+  <title>Netflix PL – moja lista</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="bar">
+      <h1>Netflix PL</h1>
+      <div class="tools">
+        <button type="button" id="btnSmaller" class="icon" aria-label="Mniejsza czcionka">A−</button>
+        <button type="button" id="btnBigger" class="icon" aria-label="Większa czcionka">A+</button>
+        <button type="button" id="btnUpdate" class="icon" aria-label="Aktualizuj listę">⟳</button>
+        <button type="button" id="btnSettings" class="icon" aria-label="Ustawienia">⚙</button>
+      </div>
+    </div>
+    <p id="stamp" class="stamp">Wczytywanie…</p>
+    <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+    <input id="q" type="search" placeholder="Szukaj tytułu…" aria-label="Szukaj tytułu" autocomplete="off">
+    <details id="filters" class="filters">
+      <summary id="filtersSummary">Filtry i sortowanie</summary>
+      <div class="grid">
+        <label>Rodzaj
+          <select id="kind">
+            <option value="all">Filmy i seriale</option>
+            <option value="m">Tylko filmy</option>
+            <option value="s">Tylko seriale</option>
+          </select>
+        </label>
+        <label>Gatunek
+          <select id="genre"><option value="">Wszystkie</option></select>
+        </label>
+        <label>Pokaż
+          <select id="show">
+            <option value="all">Wszystkie</option>
+            <option value="unseen">Niewidziane</option>
+            <option value="seen">Widziane</option>
+            <option value="new">Nowe (ostatnie 7 dni)</option>
+            <option value="removed">Usunięte z Netflix</option>
+          </select>
+        </label>
+        <label>Ocena wg
+          <select id="by">
+            <option value="fw">Filmweb</option>
+            <option value="imdb">IMDb</option>
+          </select>
+        </label>
+        <label>Minimalna ocena
+          <select id="min">
+            <option value="0">Bez limitu</option>
+            <option value="5">5+</option>
+            <option value="6">6+</option>
+            <option value="6.5">6,5+</option>
+            <option value="7">7+</option>
+            <option value="7.5">7,5+</option>
+            <option value="8">8+</option>
+          </select>
+        </label>
+        <label>Sortuj
+          <select id="sort">
+            <option value="rating">Wg oceny</option>
+            <option value="pop">Najpopularniejsze</option>
+            <option value="new">Najnowsze na Netflix</option>
+            <option value="year">Rok produkcji</option>
+            <option value="title">Tytuł A–Z</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" id="btnReset" class="wide secondary">Wyczyść filtry</button>
+    </details>
+    <p id="notice" class="notice" hidden></p>
+  </header>
+
+  <main>
+    <p id="count" class="count"></p>
+    <div id="list"></div>
+    <button type="button" id="more" class="wide" hidden>Pokaż więcej</button>
+  </main>
+
+  <footer class="foot">
+    Dostępność tytułów: <b>JustWatch</b> (przez TMDB). Dane filmów: <b>TMDB</b> – ten produkt korzysta z API TMDB,
+    ale nie jest przez TMDB wspierany ani certyfikowany. Oceny: IMDb (zbiory niekomercyjne), Filmweb.
+  </footer>
+
+  <dialog id="settings">
+    <form method="dialog" id="settingsForm">
+      <h2>Ustawienia</h2>
+      <label>Token GitHub (do przycisku ⟳)
+        <input id="token" type="password" autocomplete="off" placeholder="github_pat_…">
+      </label>
+      <label>Repozytorium (właściciel/nazwa)
+        <input id="repo" type="text" autocomplete="off" placeholder="uzytkownik/netflix-pl">
+      </label>
+      <p class="hint">Token i oznaczenia „widziane” są zapisane tylko na tym telefonie.</p>
+      <p id="seenInfo" class="hint"></p>
+      <div class="row">
+        <button type="button" id="btnSave">Zapisz</button>
+        <button type="button" id="btnClose" class="secondary">Zamknij</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
