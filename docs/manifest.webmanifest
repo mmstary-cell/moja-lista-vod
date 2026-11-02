@@ -1,6 +1,6 @@
 {
   "name": "Moja lista VOD",
-  "short_name": "Moja lista VOD",
+  "short_name": "Lista VOD",
   "lang": "pl",
   "start_url": "./",
   "scope": "./",
