@@ -1,0 +1,64 @@
+name: Aktualizacja Netflix PL
+
+on:
+  schedule:
+    - cron: "0 4 * * *"        # codziennie ok. 5:00-6:00 czasu polskiego
+  workflow_dispatch:            # przycisk "Run workflow" i przycisk "Aktualizuj" w aplikacji
+  push:
+    branches: [main]
+    paths: ["docs/**", "scripts/**", ".github/workflows/**"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: netflix-pl-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Pobierz pliki
+        uses: actions/checkout@v5
+
+      - name: Przygotuj Pythona
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Pobierz katalog Netflix PL i oceny
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: python scripts/update.py
+
+      - name: Zapisz dane w repozytorium
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data.json
+          if git diff --cached --quiet; then
+            echo "Brak zmian w danych"
+          else
+            git commit -m "Aktualizacja danych $(date -u +%F)"
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - name: Przygotuj stronę
+        uses: actions/configure-pages@v5
+
+      - name: Spakuj aplikację
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Opublikuj aplikację
+        id: deploy
+        uses: actions/deploy-pages@v4
